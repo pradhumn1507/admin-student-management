@@ -1,0 +1,52 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+// Change Password
+export const changePassword = createAsyncThunk(
+    "admin/changePassword",
+    async ({ values, token }: { values: { oldPassword: string; newPassword: string }; token: string }, { rejectWithValue }) => {
+      try {
+        const response = await axios.post("/api/admin/change-password", values, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        return response.data;
+      } catch (error: any) {
+        return rejectWithValue(error.response?.data?.message || "Failed to change password");
+      }
+    }
+  );
+
+// Logout
+export const logoutAdmin = createAsyncThunk(
+  'admin/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.post('/api/admin/logout', {}, { withCredentials: true });
+      return null;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message || 'Logout failed');
+    }
+  }
+);
+
+const adminSlice = createSlice({
+    name: "admin",
+    initialState: { admin: null, loading: false, error: null },
+    reducers: {},
+    extraReducers: (builder) => {
+      builder
+        .addCase(changePassword.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(changePassword.fulfilled, (state) => {
+          state.loading = false;
+        })
+        .addCase(changePassword.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload as string;
+        });
+    },
+  });
+
+export default adminSlice.reducer;
