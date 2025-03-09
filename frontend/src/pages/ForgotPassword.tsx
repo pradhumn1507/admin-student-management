@@ -1,38 +1,39 @@
-import { useState } from 'react';
-import { Form, Input, Button, message, Typography } from 'antd';
-import axios from 'axios';
-
-const { Title } = Typography;
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { forgotPassword } from "../redux/slices/authSlice";
+import { Form, Input, Button, message } from "antd";
 
 const ForgotPassword = () => {
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.auth);
 
-  const onFinish = async (values: { email: string }) => {
-    setLoading(true);
+  const handleForgotPassword = async () => {
     try {
-      const res = await axios.post('/api/admin/forgot-password', values);
-      message.success(res.data.message);
-    } catch (error: any) {
-      message.error(error.response?.data?.message || 'Something went wrong');
-    } finally {
-      setLoading(false);
+      const res = await dispatch(forgotPassword(email));
+      if (res.payload) {
+        message.success("Reset link sent to your email");
+        setEmail("");
+      }
+    } catch (err) {
+      console.error("Error sending reset link:", err);
     }
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: 'auto', padding: '20px', marginTop: '50px', boxShadow: '0 0 10px rgba(0,0,0,0.1)' }}>
-      <Title level={2} style={{ textAlign: 'center' }}>Forgot Password</Title>
-      <Form layout="vertical" onFinish={onFinish}>
-        <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading} block>
-            Send Reset Link
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+    <Form onFinish={handleForgotPassword} layout="vertical">
+      <h2>Forgot Password</h2>
+      <Form.Item label="Email" required>
+        <Input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter your email"
+        />
+      </Form.Item>
+      <Button type="primary" htmlType="submit" loading={loading} block>
+        Send Reset Link
+      </Button>
+    </Form>
   );
 };
 

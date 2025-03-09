@@ -19,7 +19,7 @@ const ChangePassword = ({ closeModal }: { closeModal: () => void }) => {
 
       await dispatch(changePassword({ values, token })).unwrap();
       message.success("Password changed successfully!");
-      closeModal(); // Close the modal after success
+      closeModal();
     } catch (err: any) {
       message.error(err);
     }

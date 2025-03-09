@@ -1,4 +1,3 @@
-// backend/models/Admin.js
 import mongoose from 'mongoose';
 
 const AdminSchema = new mongoose.Schema({
@@ -7,7 +6,9 @@ const AdminSchema = new mongoose.Schema({
   password: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   lastLogin: { type: Date, default: null },
-  profilePicture: { type: String, required: true, unique: true },
+  profilePicture: { type: String,  unique: true },
+  resetToken: { type: String },
+  resetTokenExpiry: { type: Date },
 });
 
 export default mongoose.model('Admin', AdminSchema);

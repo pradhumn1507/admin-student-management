@@ -25,8 +25,8 @@ const EditProfile = ({ closeModal, updateProfilePic }: { closeModal: () => void;
       );
 
       message.success("Profile updated successfully");
-      updateProfilePic(profilePicture || ""); // Update profile picture in Dashboard
-      closeModal(); // Close modal
+      updateProfilePic(profilePicture || "");
+      closeModal();
     } catch (error: any) {
       message.error(error.response?.data?.message || "Update failed");
     } finally {

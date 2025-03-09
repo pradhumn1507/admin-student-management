@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserOutlined, LockOutlined, EditOutlined, LogoutOutlined, PlusOutlined } from "@ant-design/icons";
 import StudentList from "../pages/StudentList";
-// Import the existing components
 import ChangePassword from "../pages/ChangePassword";
 import ForgotPassword from "../pages/ForgotPassword";
 import EditProfile from "../pages/EditProfile";
@@ -24,7 +23,7 @@ const Dashboard = () => {
     setAdmin((prev) => (prev ? { ...prev, profilePic: pic } : prev));
   };
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalType, setModalType] = useState(""); // "changePassword", "forgotPassword", "editProfile"
+  const [modalType, setModalType] = useState("");
   const [studentModalVisible, setStudentModalVisible] = useState(false);
 
   useEffect(() => {
@@ -112,7 +111,6 @@ const Dashboard = () => {
         Add Student
       </Button>
       <StudentList />
-      {/* Modal for Change Password, Edit Profile, Forgot Password */}
       <Modal title={modalType.replace(/([A-Z])/g, " $1")} visible={modalVisible} onCancel={closeModal} footer={null}>
   {modalType === "changePassword" && <ChangePassword closeModal={closeModal} />}
   {modalType === "forgotPassword" && <ForgotPassword />}

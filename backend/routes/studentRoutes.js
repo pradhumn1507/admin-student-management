@@ -4,7 +4,6 @@ import Student from '../models/Student.js';
 import  protect  from '../middlewares/authMiddleware.js';
 const router = express.Router();
 
-// Create Student
 router.post('/', protect, async (req, res) => {
   const { name, email, password, phone, qualification, gender, profileImage } = req.body;
   try {
@@ -23,7 +22,6 @@ router.post('/', protect, async (req, res) => {
   }
 });
 
-// Get all students
 router.get('/', protect, async (req, res) => {
   try {
     const students = await Student.find();
@@ -34,7 +32,6 @@ router.get('/', protect, async (req, res) => {
 });
 
 
-// Update student
 router.put('/:id', protect, async (req, res) => {
   try {
     const student = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });

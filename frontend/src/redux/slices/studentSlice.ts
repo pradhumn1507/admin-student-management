@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// ✅ Add Student API
 export const addStudent = createAsyncThunk(
   "students/addStudent",
   async (studentData, { rejectWithValue, getState }) => {
@@ -20,7 +19,6 @@ export const addStudent = createAsyncThunk(
   }
 );
 
-// ✅ Fetch Students API
 export const fetchStudents = createAsyncThunk(
   "students/fetchStudents",
   async (_, { rejectWithValue, getState }) => {
@@ -39,7 +37,6 @@ export const fetchStudents = createAsyncThunk(
   }
 );
 
-// ✅ Edit Student API
 export const editStudent = createAsyncThunk(
   "students/editStudent",
   async ({ id, updatedData }: { id: string; updatedData: any }, { rejectWithValue, getState }) => {
@@ -64,7 +61,6 @@ const studentSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // ✅ Handle Add Student
       .addCase(addStudent.pending, (state) => {
         state.loading = true;
       })
@@ -77,7 +73,6 @@ const studentSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ✅ Handle Fetch Students
       .addCase(fetchStudents.pending, (state) => {
         state.loading = true;
       })
@@ -89,8 +84,6 @@ const studentSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-
-      // ✅ Handle Edit Student
       .addCase(editStudent.pending, (state) => {
         state.loading = true;
       })

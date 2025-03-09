@@ -1,6 +1,5 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
-// import { Request, Response } from 'express';
 import Admin from '../models/Admin.js';
 import  protect  from '../middlewares/authMiddleware.js';
 
@@ -20,21 +19,7 @@ router.post('/change-password', protect, async (req, res) => {
   res.json({ message: 'Password changed successfully' });
 });
 
-/**
- * @route POST /api/admin/forgot-password
- * @desc Forgot Password (send reset link)
- * @access Public
- */
-router.post('/forgot-password',protect, async (req, res) => {
-  // Implement email-based password reset logic
-  res.json({ message: 'Password reset link sent to email' });
-});
 
-/**
- * @route PUT /api/admin/edit-profile-picture
- * @desc Update Admin Profile Picture
- * @access Private
- */
 router.put('/edit-profile-picture',protect, async (req, res) => {
   const { profilePicture } = req.body;
   const admin = await Admin.findByIdAndUpdate(req.user.id, { profilePicture }, { new: true });
@@ -44,11 +29,6 @@ router.put('/edit-profile-picture',protect, async (req, res) => {
   res.json({ message: 'Profile picture updated', admin });
 });
 
-/**
- * @route GET /api/admin/admin-details
- * @desc Get Admin Details
- * @access Private
- */
 router.get('/admin-details',protect, async (req, res) => {
   const admin = await Admin.findById(req.user._id).select('-password');
 
@@ -57,11 +37,6 @@ router.get('/admin-details',protect, async (req, res) => {
   res.json(admin);
 });
 
-/**
- * @route POST /api/admin/logout
- * @desc Logout Admin
- * @access Private
- */
 router.post('/logout', async (_req, res) => {
   res.json({ message: 'Logout successful' });
 });

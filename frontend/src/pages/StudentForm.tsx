@@ -28,17 +28,18 @@ const StudentForm = ({ visible, onClose, student }: any) => {
     const reader = new FileReader();
     reader.onloadend = () => setProfileImage(reader.result as string);
     reader.readAsDataURL(file);
-    return false; // Prevent auto-upload
+    return false;
   };
 
-  const handleFinish = async (values: any) => {
-    try {
-      await dispatch(addStudent({ ...values, profileImage })).unwrap();
-      message.success(student ? "Student updated successfully!" : "Student added successfully!");
-      onClose();
-    } catch (error: any) {
-      message.error(error.message || "Failed to add student");
+  const handleFinish = (values: any) => {
+    if (student) {
+
+      dispatch(editStudent({ id: student._id, updatedData: { ...values, profileImage } }));
+    } else {
+
+      dispatch(addStudent({ ...values, profileImage }));
     }
+    onClose();
   };
 
   return (

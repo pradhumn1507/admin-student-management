@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Change Password
 export const changePassword = createAsyncThunk(
     "admin/changePassword",
     async ({ values, token }: { values: { oldPassword: string; newPassword: string }; token: string }, { rejectWithValue }) => {
@@ -17,7 +16,6 @@ export const changePassword = createAsyncThunk(
     }
   );
 
-// Logout
 export const logoutAdmin = createAsyncThunk(
   'admin/logout',
   async (_, { rejectWithValue }) => {
