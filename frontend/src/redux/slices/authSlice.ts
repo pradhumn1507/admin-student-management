@@ -1,12 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+export const axiosInstance: any = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL + '/',
+  headers: {
+    "Accept": "application/json"
+  },
+});
 
 export const loginUser = createAsyncThunk(
   'auth/login',
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', userData);
+      const response = await axiosInstance.post('/api/auth/login', userData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -18,7 +24,7 @@ export const registerUser = createAsyncThunk(
   'auth/register', 
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+      const response = await axiosInstance.post('/api/auth/register', userData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -28,7 +34,7 @@ export const registerUser = createAsyncThunk(
 
 export const forgotPassword = createAsyncThunk("auth/forgotPassword", async (email, { rejectWithValue }) => {
   try {
-    const response = await axios.post("/api/auth/forgot-password", { email });
+    const response = await axiosInstance.post("/api/auth/forgot-password", { email });
     return response.data.message;
   } catch (error) {
     console.error("Forgot Password Error:", error.response?.data);
@@ -38,7 +44,7 @@ export const forgotPassword = createAsyncThunk("auth/forgotPassword", async (ema
 
 export const resetPassword = createAsyncThunk("auth/resetPassword", async ({ token, newPassword }, { rejectWithValue }) => {
   try {
-    const response = await axios.post("http://localhost:5000/api/auth/reset-password", { token,newPassword });
+    const response = await axiosInstance.post("/api/auth/reset-password", { token, newPassword });
     return response.data.message;
   } catch (error) {
     console.error("Reset Password Error:", error);

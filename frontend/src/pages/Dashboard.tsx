@@ -4,14 +4,13 @@ import { AppDispatch } from "../redux/store";
 import { logoutAdmin } from "../redux/slices/adminSlice";
 import { Button, Typography, message, Avatar, Dropdown, Menu, Modal } from "antd";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { UserOutlined, LockOutlined, EditOutlined, LogoutOutlined, PlusOutlined } from "@ant-design/icons";
 import StudentList from "../pages/StudentList";
 import ChangePassword from "../pages/ChangePassword";
 import ForgotPassword from "../pages/ForgotPassword";
 import EditProfile from "../pages/EditProfile";
 import StudentForm from "../pages/StudentForm";
-
+import axiosInstance from "../utils/axiosInstance";
 const { Title } = Typography;
 
 const Dashboard = () => {
@@ -35,7 +34,7 @@ const Dashboard = () => {
       }
 
       try {
-        const response = await axios.get("/api/admin/admin-details", {
+        const response = await axiosInstance.get("/api/admin/admin-details", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

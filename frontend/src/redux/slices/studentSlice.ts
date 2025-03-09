@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 
 export const addStudent = createAsyncThunk(
   "students/addStudent",
@@ -8,7 +9,7 @@ export const addStudent = createAsyncThunk(
       const state: any = getState();
       const token = state.auth.token || localStorage.getItem("token");
 
-      const response = await axios.post("/api/students", studentData, {
+      const response = await axiosInstance.post("/api/students", studentData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -26,7 +27,7 @@ export const fetchStudents = createAsyncThunk(
       const state: any = getState();
       const token = state.auth.token || localStorage.getItem("token");
 
-      const response = await axios.get("/api/students", {
+      const response = await axiosInstance.get("/students", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
