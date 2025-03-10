@@ -7,7 +7,7 @@ import adminRoutes from './routes/adminRoutes.js';
 import studentRoutes from './routes/studentRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 
-// Load environment variables
+
 dotenv.config();
 
 const app = express();
@@ -15,8 +15,8 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: "http://localhost:5173", // Replace with your frontend URL
-  credentials: true, // Allow cookies and Authorization headers
+  origin: "*",
+  credentials: true,
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type,Authorization"
 }));
