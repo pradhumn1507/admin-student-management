@@ -4,9 +4,12 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import ResetPassword from "./pages/ResetPassword";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
+    <> <ToastContainer />
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
@@ -15,6 +18,7 @@ const App = () => {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
+    </>
   );
 };
 

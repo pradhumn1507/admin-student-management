@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axiosInstance";
+import toast from "react-hot-toast";
 
 export const addStudent = createAsyncThunk(
   "students/addStudent",
@@ -14,6 +15,7 @@ export const addStudent = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
+      console.log("error.response",error.response.data);
       return rejectWithValue(error.response?.data?.message || "Failed to add student");
     }
   }
@@ -32,6 +34,7 @@ export const fetchStudents = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to fetch student");
       return rejectWithValue(error.response?.data?.message || "Failed to fetch students");
     }
   }
@@ -50,6 +53,7 @@ export const editStudent = createAsyncThunk(
 
       return response.data;
     } catch (error: any) {
+      toast.error(error.response?.data?.message || "Failed to edit student");
       return rejectWithValue(error.response?.data?.message || "Failed to update student");
     }
   }

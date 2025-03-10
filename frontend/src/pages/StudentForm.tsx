@@ -4,6 +4,7 @@ import { UploadOutlined, EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/ic
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store";
 import { addStudent ,editStudent} from "../redux/slices/studentSlice";
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 
@@ -31,13 +32,23 @@ const StudentForm = ({ visible, onClose, student }: any) => {
     return false;
   };
 
-  const handleFinish = (values: any) => {
+  const handleFinish =async (values: any) => {
     if (student) {
 
       dispatch(editStudent({ id: student._id, updatedData: { ...values, profileImage } }));
     } else {
+try{
+    const response = await dispatch(addStudent({ ...values, profileImage })).unwrap();
+    console.log("response",response);
+    // Show success toast if student is added
+    toast.success("Student added successfully!", {
+      position: "top-right",
+    });
 
-      dispatch(addStudent({ ...values, profileImage }));
+  } catch (error: any) {
+    // Show error toast if request fails
+    toast.error(error || "Failed to add student");
+  }
     }
     onClose();
   };

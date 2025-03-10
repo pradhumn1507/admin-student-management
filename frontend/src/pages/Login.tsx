@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../redux/store';
 import { loginUser } from '../redux/slices/authSlice';
 import { Button, Input, Form, Typography, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const { Title } = Typography;
 
@@ -11,14 +12,19 @@ const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const { loading, error } = useSelector((state: any) => state.auth); 
 
   const onFinish = async (values: { email: string; password: string }) => {
     try {
       await dispatch(loginUser(values)).unwrap();
-      message.success('Login successful!');
+         toast.success("Login successful!", {
+            position: "top-right",
+          });
+      // message.success('Login successful!');
       navigate('/dashboard');
-    } catch (err: any) {
-      message.error(err);
+    } catch (error: any) {
+      // message.error(err);
+      toast.error(error || "Failed login");
     }
   };
 
@@ -33,7 +39,7 @@ const Login = () => {
           <Input.Password />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" block>
+          <Button type="primary" htmlType="submit" loading={loading} block>
             Login
           </Button>
         </Form.Item>
