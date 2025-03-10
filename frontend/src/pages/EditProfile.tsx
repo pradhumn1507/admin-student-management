@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, Button, Upload, message, Typography } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 
 const { Title } = Typography;
 
@@ -18,13 +18,18 @@ const EditProfile = ({ closeModal, updateProfilePic }: { closeModal: () => void;
         return;
       }
 
-      await axios.put(
+      await axiosInstance.put(
         "/api/admin/edit-profile-picture",
         { profilePicture },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       message.success("Profile updated successfully");
+
+      if (profilePicture) {
+        localStorage.setItem("profilePic", profilePicture);
+      }
+
       updateProfilePic(profilePicture || "");
       closeModal();
     } catch (error: any) {
@@ -34,16 +39,18 @@ const EditProfile = ({ closeModal, updateProfilePic }: { closeModal: () => void;
     }
   };
 
-  const handleUpload = async (file: any) => {
+  const handleUpload = (file: File) => {
     const reader = new FileReader();
     reader.onloadend = () => {
       setProfilePicture(reader.result as string);
     };
     reader.readAsDataURL(file);
+    
+    return false; // Prevent default upload behavior
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "auto", padding: "20px", marginTop: "50px", boxShadow: "0 0 10px rgba(0,0,0,0.1)" }}>
+    <div style={{ maxWidth: 400, margin: "auto", padding: "20px" }}>
       <Title level={2} style={{ textAlign: "center" }}>Edit Profile</Title>
       <Form layout="vertical" onFinish={onFinish}>
         <Form.Item label="Profile Picture">

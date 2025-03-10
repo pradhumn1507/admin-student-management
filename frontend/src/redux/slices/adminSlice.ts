@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axiosInstance from "../../utils/axiosInstance";
 
 export const changePassword = createAsyncThunk(
     "admin/changePassword",
     async ({ values, token }: { values: { oldPassword: string; newPassword: string }; token: string }, { rejectWithValue }) => {
       try {
-        const response = await axios.post("/api/admin/change-password", values, {
+        const response = await axiosInstance.post("/api/admin/change-password", values, {
           headers: { Authorization: `Bearer ${token}` },
         });
   
@@ -20,7 +20,7 @@ export const logoutAdmin = createAsyncThunk(
   'admin/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await axios.post('/api/admin/logout', {}, { withCredentials: true });
+      await axiosInstance.post('/api/admin/logout', {}, { withCredentials: true });
       return null;
     } catch (err: any) {
       return rejectWithValue(err.response?.data?.message || 'Logout failed');

@@ -16,8 +16,15 @@ const { Title } = Typography;
 const Dashboard = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [admin, setAdmin] = useState<{ name: string; email: string; lastLogin: string; profilePic?: string } | null>(null);
-
+  const [admin, setAdmin] = useState<{
+    name: string;
+    email: string;
+    lastLogin: string;
+    profilePic?: string;
+  } | null>(() => {
+    const storedProfilePic = localStorage.getItem("profilePic");
+    return storedProfilePic ? { name: "", email: "", lastLogin: "", profilePic: storedProfilePic } : null;
+  });
   const updateProfilePic = (pic: string) => {
     setAdmin((prev) => (prev ? { ...prev, profilePic: pic } : prev));
   };
@@ -39,6 +46,10 @@ const Dashboard = () => {
         });
 
         setAdmin(response.data);
+
+        if (response.data.profilePic) {
+          localStorage.setItem("profilePic", response.data.profilePic);
+        }
       } catch (error) {
         console.error("Error fetching admin details:", error);
         navigate("/login");
@@ -94,13 +105,14 @@ const Dashboard = () => {
         </div>
 
         <Dropdown overlay={menu} trigger={["click"]}>
-          <Avatar
-            size={64}
-            src={admin?.profilePic || "https://www.gravatar.com/avatar?d=mp"}
-            icon={!admin?.profilePic && <UserOutlined />}
-            style={{ cursor: "pointer" }}
-          />
-        </Dropdown>
+  <Avatar
+    size={64}
+    src={admin?.profilePic || localStorage.getItem("profilePic") || "https://www.gravatar.com/avatar?d=mp"}
+    icon={!admin?.profilePic && !localStorage.getItem("profilePic") && <UserOutlined />}
+    style={{ cursor: "pointer" }}
+  />
+</Dropdown>
+
       </div>
 
       <Button type="primary" danger icon={<LogoutOutlined />} onClick={handleLogout}>
